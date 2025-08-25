@@ -46,7 +46,7 @@ public partial class DecisionsData {
 
             var nowContextSet = new HashSet<string>( nowContexts.Select( c => c.Name ) );
 
-            foreach( (string ctxPrefName, float mul) in this.ContextPreference ) {
+            foreach( (string ctxPrefName, float mul) in this.AssociatedContextPreference ) {
                 if( nowContextSet.Contains(ctxPrefName) ) {
                     weight *= mul;
                 }
@@ -54,7 +54,7 @@ public partial class DecisionsData {
 
             bool hasSet = false;
 
-            foreach( (string[] ctxSetNames, float mul) in this.ContextSetPreference ) {
+            foreach( (string[] ctxSetNames, float mul) in this.AssociatedContextSetPreference ) {
                 if( ctxSetNames.All( c => nowContextSet.Contains(c) ) ) {
                     weight *= mul;
                     hasSet = true;
@@ -62,7 +62,7 @@ public partial class DecisionsData {
             }
 
             if( !hasSet ) {
-                weight *= this.UnmatchedContextSetPreference;
+                weight *= this.UnmatchedAssociatedContextSetPreference;
             }
 
             // Let the contexts also decide if they go together or not

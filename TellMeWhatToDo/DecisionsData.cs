@@ -12,6 +12,7 @@ public partial class DecisionsData(
             IList<DecisionsData.Option> options,
             IList<DecisionsData.Context> contexts ) {
     public partial class Option(
+                string[] isOfContext,
                 string info,
                 float weight,
                 int repeatMinimumAmount,
@@ -21,9 +22,10 @@ public partial class DecisionsData(
                 int afterRepeatMinimumDelay,
                 int afterRepeatMaximumDelay,
                 //IDictionary<string, float> contextWeightAdditive,
-                IDictionary<string, float> contextPreference,
-                IDictionary<string[], float> contextSetPreference,
-                float unmatchedContextSetPreference ) {
+                IDictionary<string, float> associatedContextPreference,
+                IDictionary<string[], float> associatedContextSetPreference,
+                float unmatchedAssociatedContextSetPreference ) {
+        public string[] IsOfContext { get; set; } = isOfContext;
         public string Info { get; set; } = info;
         public float Weight { get; set; } = weight;
         public int RepeatMinimumAmount { get; set; } = repeatMinimumAmount;
@@ -33,9 +35,9 @@ public partial class DecisionsData(
         public int AfterRepeatMinimumSteps { get; set; } = afterRepeatMinimumDelay;
         public int AfterRepeatMaximumSteps { get; set; } = afterRepeatMaximumDelay;
         //public IDictionary<string, float> ContextWeightAdditive { get; set; } = contextWeightAdditive;
-        public IDictionary<string, float> ContextPreference { get; set; } = contextPreference;
-        public IDictionary<string[], float> ContextSetPreference { get; set; } = contextSetPreference;
-        public float UnmatchedContextSetPreference { get; set; } = unmatchedContextSetPreference;
+        public IDictionary<string, float> AssociatedContextPreference { get; set; } = associatedContextPreference;
+        public IDictionary<string[], float> AssociatedContextSetPreference { get; set; } = associatedContextSetPreference;
+        public float UnmatchedAssociatedContextSetPreference { get; set; } = unmatchedAssociatedContextSetPreference;
     }
     
     public partial class Context(

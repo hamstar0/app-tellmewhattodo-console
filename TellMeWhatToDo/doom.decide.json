@@ -1,19 +1,37 @@
-{
+{ TODO
   "Options": [
     {
+      "IsOfContext": [ "Default" ],
       "Info": "Square room",
       "Weight": 1,
       "RepeatMinimumAmount": 0,
       "RepeatMaximumAmount": 9999,
       "IsRepeatingWeightScale": 1,
       "IsRepeatingContiguouslyWeightScale": 0.9,
-      "AfterRepeatMinimumSteps":  3,
-      "AfterRepeatMaximumSteps": 2147483647,
-      "ContextPreference": {
-        "Default": 1
-      },
-      "ContextSetPreference": { },
-      "UnmatchedContextSetPreference": 1
+      "AfterRepeatMinimumSteps": 3,
+      "AfterRepeatMaximumSteps": 2147483647
+    },
+    {
+      "IsOfContext": [ "Hallway" ],
+      "Info": "Short corridor",
+      "Weight": 1,
+      "RepeatMinimumAmount": 0,
+      "RepeatMaximumAmount": 9999,
+      "IsRepeatingWeightScale": 1,
+      "IsRepeatingContiguouslyWeightScale": 0.9,
+      "AfterRepeatMinimumSteps": 3,
+      "AfterRepeatMaximumSteps": 2147483647
+    },
+    {
+      "IsOfContext": [ "Hallway" ],
+      "Info": "Long corridor",
+      "Weight": 1,
+      "RepeatMinimumAmount": 0,
+      "RepeatMaximumAmount": 9999,
+      "IsRepeatingWeightScale": 1,
+      "IsRepeatingContiguouslyWeightScale": 0.9,
+      "AfterRepeatMinimumSteps": 3,
+      "AfterRepeatMaximumSteps": 2147483647
     }
   ],
   "Contexts": [
@@ -23,7 +41,21 @@
       "MinDuration": 5,
       "MaxDuration": 50,
       "MinCooldown": 10,
-      "CoContextWeightScales": {}
+      "AssociatedContextPreference": {
+        "Hallway": 1
+      },
+      "AssociatedContextSetPreference": {},
+      "UnmatchedAssociatedContextSetPreference": 1
+    },
+    {
+      "Name": "Hallway",
+      "Density": 1,
+      "MinDuration": 5,
+      "MaxDuration": 50,
+      "MinCooldown": 10,
+      "AssociatedContextPreference": {},
+      "AssociatedContextSetPreference": {},
+      "UnmatchedAssociatedContextSetPreference": 1
     }
   ]
 }
