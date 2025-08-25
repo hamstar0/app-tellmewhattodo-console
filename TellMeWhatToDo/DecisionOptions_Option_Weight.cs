@@ -24,14 +24,14 @@ public static class LinqExtensions {
     }
 }
 
-public partial class DecisionsData {
-    public partial class Option {
+public partial class DecisionOptions {
+    public partial class OptionDef {
         public float ComputeWeight(
-                    DecisionsData data,
+                    //DecisionsOption data,
                     bool isRepeating,
                     bool isContiguous,
                     bool canRepeatAgain,
-                    IList<DecisionsData.Context> nowContexts ) {
+                    IList<DecisionOptions.ContextDef> nowContexts ) {
             float weight = this.Weight;
 
             if( isRepeating ) {
@@ -66,8 +66,8 @@ public partial class DecisionsData {
             }
 
             // Let the contexts also decide if they go together or not
-            foreach( Context nowContext1 in nowContexts ) {
-                foreach( Context nowContext2 in nowContexts ) {
+            foreach( ContextDef nowContext1 in nowContexts ) {
+                foreach( ContextDef nowContext2 in nowContexts ) {
                     if( nowContext1 == nowContext2 ) {
                         continue;
                     }

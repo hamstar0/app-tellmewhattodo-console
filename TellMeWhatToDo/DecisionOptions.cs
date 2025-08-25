@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace TellMeWhatToDo;
 
 
-public partial class DecisionsData(
-            IList<DecisionsData.Option> options,
-            IList<DecisionsData.Context> contexts ) {
-    public partial class Option(
+public partial class DecisionOptions(
+            IList<DecisionOptions.OptionDef> options,
+            IList<DecisionOptions.ContextDef> contexts ) {
+    public partial class OptionDef(
                 string[] isOfContext,
                 string info,
                 float weight,
@@ -40,7 +40,7 @@ public partial class DecisionsData(
         public float UnmatchedAssociatedContextSetPreference { get; set; } = unmatchedAssociatedContextSetPreference;
     }
     
-    public partial class Context(
+    public partial class ContextDef(
                 string name,
                 //float activeWeightAdditive,
                 //float inactiveWeightAdditive,
@@ -61,19 +61,19 @@ public partial class DecisionsData(
 
 
 
-    public IList<Option> Options { get; set; } = options;
+    public IList<OptionDef> Options { get; set; } = options;
 
-    public IList<Context> Contexts { get; set; } = contexts;
+    public IList<ContextDef> Contexts { get; set; } = contexts;
 
 
-    private IDictionary<string, Context> _ContextMap = new Dictionary<string, Context>(
-        contexts.Select( c => new KeyValuePair<string, Context>(c.Name, c) )
+    private IDictionary<string, ContextDef> _ContextMap = new Dictionary<string, ContextDef>(
+        contexts.Select( c => new KeyValuePair<string, ContextDef>(c.Name, c) )
     );
 
 
 
-    public Context? GetContext( string name ) {
-        if( this._ContextMap.TryGetValue(name, out Context? ctx) ) {
+    public ContextDef? GetContextData( string name ) {
+        if( this._ContextMap.TryGetValue(name, out ContextDef? ctx) ) {
             return ctx;
         }
         return null;

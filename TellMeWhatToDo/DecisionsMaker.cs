@@ -8,44 +8,44 @@ using System.Threading.Tasks;
 namespace TellMeWhatToDo;
 
 
-public partial class DecisionsMaker( DecisionsData data ) {
-    public readonly DecisionsData Data = data;
+public partial class DecisionsMaker( DecisionOptions data ) {
+    public readonly DecisionOptions Data = data;
 
 
     private Random Random = new Random();
 
-    private IList<(bool isLastRepeat, DecisionsData.Option choice)> History
-            = new List<(bool, DecisionsData.Option)>();
+    private IList<(bool isLastRepeat, DecisionOptions.OptionDef choice)> History
+            = new List<(bool, DecisionOptions.OptionDef)>();
 
-    private IList<DecisionsData.Context> CurrentContexts = new List<DecisionsData.Context>();
-
-
-    public DecisionsData.Option? PendingDecision;
+    private IList<DecisionOptions.ContextDef> CurrentContexts = new List<DecisionOptions.ContextDef>();
 
 
+    public DecisionOptions.OptionDef? PendingDecision;
 
-    public void AddInitialContext( DecisionsData.Context context ) {
+
+
+    public void AddInitialContext( DecisionOptions.ContextDef context ) {
         this.CurrentContexts.Add( context );
     }
 
-    public IList<DecisionsData.Context> PickContexts() {
+    public IList<DecisionOptions.ContextDef> PickContexts() {
         return this.CurrentContexts
             .Where( c => this.Random.NextSingle() < c.Density )
             .ToList();
     }
 
-    public IList<float> GetWeights( IList<DecisionsData.Context> contexts ) {
+    public IList<float> GetWeights( IList<DecisionOptions.ContextDef> contexts ) {
         int count = this.Data.Options.Count;
         IList<float> weights = new List<float>( count );
 
         for( int i=0; i<count; i++ ) {
-            DecisionsData.Option o = this.Data.Options[i];
+            DecisionOptions.OptionDef o = this.Data.Options[i];
 
             bool isRepeating = this.IsRepeating( o, out bool isContiguous );
             bool canRepeatAgain = isRepeating && this.CanRepeatAgain( o );
 
             weights[i] = o.ComputeWeight(
-                this.Data,
+                //this.Data,
                 isRepeating,
                 isContiguous,
                 canRepeatAgain,

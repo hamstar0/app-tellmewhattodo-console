@@ -17,7 +17,7 @@ internal partial class Program {
 
 
     private static bool AddContext( string context ) {
-        DecisionsData.Context? contextEntry = Program.Decider?.Data.GetContext( context );
+        DecisionOptions.ContextDef? contextEntry = Program.Decider?.Data.GetContextData( context );
         if( contextEntry is null ) {
             return false;
         }

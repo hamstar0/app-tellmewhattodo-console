@@ -8,10 +8,10 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker {
-    public DecisionsData.Option ProposeDecision() {
-        DecisionsData.Option choice = null!;
+    public DecisionOptions.OptionDef ProposeDecision() {
+        DecisionOptions.OptionDef choice = null!;
 
-        IList<DecisionsData.Context> contexts = this.PickContexts();
+        IList<DecisionOptions.ContextDef> contexts = this.PickContexts();
         IList<float> weights = this.GetWeights( contexts );
 
         float r = this.Random.NextSingle() * weights.Sum(o => o);
@@ -33,7 +33,7 @@ public partial class DecisionsMaker {
     }
 
 
-    public void MakeDecision( DecisionsData.Option choice ) {
+    public void MakeDecision( DecisionOptions.OptionDef choice ) {
         bool isRepeating = this.IsRepeating( choice, out _ );
         bool canRepeat = isRepeating
             ? this.CanRepeatAnew( choice )

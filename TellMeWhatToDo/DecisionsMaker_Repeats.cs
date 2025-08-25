@@ -8,11 +8,11 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker {
-    private IDictionary<DecisionsData.Option, int> _RemainingRepeats = new Dictionary<DecisionsData.Option, int>();
+    private IDictionary<DecisionOptions.OptionDef, int> _RemainingRepeats = new Dictionary<DecisionOptions.OptionDef, int>();
 
 
 
-    public bool IsRepeating( DecisionsData.Option option, out bool isContiguous ) {
+    public bool IsRepeating( DecisionOptions.OptionDef option, out bool isContiguous ) {
         bool isNonContiguous = false;
 
         for( int i = this.History.Count - 1; i >= 0; i-- ) {
@@ -29,7 +29,7 @@ public partial class DecisionsMaker {
         return false;
     }
 
-    public int CountRepeatsSince( DecisionsData.Option option, int index, out int contiguousRepeats ) {
+    public int CountRepeatsSince( DecisionOptions.OptionDef option, int index, out int contiguousRepeats ) {
         contiguousRepeats = 0;
         int repeats = 0;
         bool contiguityBroken = false;
@@ -52,7 +52,7 @@ public partial class DecisionsMaker {
         return repeats;
     }
 
-    public bool CanRepeatAnew( DecisionsData.Option option ) {
+    public bool CanRepeatAnew( DecisionOptions.OptionDef option ) {
         int traveled = 0;
 
         for( int i = this.Data.Options.Count - 1; i >= 0; i-- ) {
@@ -71,7 +71,7 @@ public partial class DecisionsMaker {
         return true;
     }
 
-    public bool CanRepeatAgain( DecisionsData.Option option ) {
+    public bool CanRepeatAgain( DecisionOptions.OptionDef option ) {
         int repeats = this.CountRepeatsSince( option, this.History.Count - 1, out _ );
 
         if( this._RemainingRepeats[option] <= 0 ) {
