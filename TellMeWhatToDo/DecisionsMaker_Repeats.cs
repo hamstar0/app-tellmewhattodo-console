@@ -52,18 +52,25 @@ public partial class DecisionsMaker {
         return repeats;
     }
 
-    public bool CanRepeatAnew( DecisionOptions.OptionDef option ) {
+    public bool CanRepeatAnew( DecisionOptions.OptionDef option, out float weight ) {
+        if( option.RepeatIntermissionMinimumDelay is null ) {
+            weight = option.Weight;
+            return true;
+        }
+
         int traveled = 0;
 
-        for( int i = this.Data.Options.Count - 1; i >= 0; i-- ) {
+        for( int i = this.Options.Options.Count - 1; i >= 0; i-- ) {
             if( traveled >= option.RepeatIntermissionMinimumDelay ) {
+                weight = option.Weight;
                 return true;
             }
 
             traveled++;
         }
 
-        return true;
+        weight = option.RepeatIntermissionWeight ?? 0f;
+        return false;
     }
 
     public bool CanRepeatAgain( DecisionOptions.OptionDef option ) {

@@ -25,7 +25,7 @@ internal partial class Program {
 
         try {
             string fileData = JsonSerializer.Serialize(
-                Program.Decider?.Data,
+                Program.Decider?.Options,
                 new JsonSerializerOptions { WriteIndented = true }
             );
 

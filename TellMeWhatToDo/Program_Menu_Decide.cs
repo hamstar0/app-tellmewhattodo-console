@@ -60,12 +60,18 @@ internal partial class Program {
         Program.Decider.PendingDecision = Program.Decider.ProposeDecision();
 
         Console.WriteLine( "Idea: "+Program.Decider.PendingDecision.Name );
+        if( Program.Decider.PendingDecision.Description is not null ) {
+            Console.WriteLine( "Info: "+Program.Decider.PendingDecision.Description );
+        }
     }
 
 
     private static void ConfirmDecision() {
         if( Program.Decider is null ) {
             throw new FileNotFoundException( "No decisions file loaded." );
+        }
+        if( Program.Decider.PendingDecision is null ) {
+            throw new Exception( "No decision pending." );
         }
 
         Program.Decider.MakeDecision( Program.Decider.PendingDecision );

@@ -9,7 +9,7 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker( DecisionOptions data ) {
-    public readonly DecisionOptions Data = data;
+    public readonly DecisionOptions Options = data;
 
 
     private Random Random = new Random();
@@ -34,17 +34,20 @@ public partial class DecisionsMaker( DecisionOptions data ) {
             .ToList();
     }
 
-    public IList<float> GetWeights( IList<string> contexts ) {
-        int count = this.Data.Options.Count;
-        IList<float> weights = new List<float>( count );
+    public IDictionary<DecisionOptions.OptionDef, float> GetWeights( IList<string> contexts ) {
+        int count = this.Options.Options.Count;
+        var weights = new Dictionary<DecisionOptions.OptionDef, float>( count );
 
         for( int i=0; i<count; i++ ) {
-            DecisionOptions.OptionDef o = this.Data.Options[i];
+            DecisionOptions.OptionDef o = this.Options.Options[i];
+            if( !o.MatchesContexts(contexts) ) {
+                continue;
+            }
 
             bool isRepeating = this.IsRepeating( o, out bool isContiguous );
             bool canRepeatAgain = isRepeating && this.CanRepeatAgain( o );
 
-            weights[i] = o.ComputeWeight(
+            weights[o] = o.ComputeWeight(
                 //this.Data,
                 isRepeating,
                 isContiguous,

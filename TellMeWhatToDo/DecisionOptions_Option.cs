@@ -31,7 +31,7 @@ public partial class DecisionOptions {
     /// current layer before a repeat of the current option resumes using its normal `weight` instead
     /// of `afterRepeatDowntimeWeight`.</param>
     /// <param name="repeatIntermissionWeight">Weight value to use instead of `weight` while in
-    /// intermission from previous block of repeats.</param>
+    /// intermission from previous block of repeats. Defaults to 0.</param>
     /// <param name="associatedContextsPreference">Applies additional weight scaling (multiplier)
     /// for each given set of matched parent contexts.</param>
     /// <param name="unmatchedAssociatedContextsPreference">Applies additional weight scaling
@@ -50,17 +50,23 @@ public partial class DecisionOptions {
                 float? repeatIntermissionWeight,
                 IDictionary<string[], float> associatedContextsPreference,
                 float? unmatchedAssociatedContextsPreference ) {
-    f    public IDictionary<string, float> CurrentContexts { get; set; } = currentContexts;
+        public IDictionary<string, float> CurrentContexts { get; set; } = currentContexts;
         public string Name { get; set; } = name;
-    f    public string? Description { get; set; } = description;
+        public string? Description { get; set; } = description;
         public float Weight { get; set; } = weight;
         public int? RepeatMinimumAmount { get; set; } = repeatMinimumAmount;
         public int? RepeatMaximumAmount { get; set; } = repeatMaximumAmount;
         public float? IsRepeatingWeightScale { get; set; } = isRepeatingWeightScale;
         public float? IsRepeatingContiguouslyWeightScale { get; set; } = isRepeatingContiguouslyWeightScale;
         public int? RepeatIntermissionMinimumDelay { get; set; } = repeatIntermissionMinimumDelay;
-    f    public float? AfterRepeatDowntimeWeight { get; set; } = repeatIntermissionWeight;
+        public float? RepeatIntermissionWeight { get; set; } = repeatIntermissionWeight;
         public IDictionary<string[], float> AssociatedContextsPreference { get; set; } = associatedContextsPreference;
         public float? UnmatchedAssociatedContextSetPreference { get; set; } = unmatchedAssociatedContextsPreference;
+
+
+
+        public bool MatchesContexts( IList<string> contexts ) {
+            return this.CurrentContexts.Keys.All( c => contexts.Contains(c) );
+        }
     }
 }
