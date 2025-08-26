@@ -11,7 +11,7 @@ public partial class DecisionsMaker {
     public DecisionOptions.OptionDef ProposeDecision() {
         DecisionOptions.OptionDef choice = null!;
 
-        IList<DecisionOptions.ContextDef> contexts = this.PickContexts();
+        IList<string> contexts = this.PickContexts();
         IList<float> weights = this.GetWeights( contexts );
 
         float r = this.Random.NextSingle() * weights.Sum(o => o);
@@ -40,7 +40,10 @@ public partial class DecisionsMaker {
             : this.CanRepeatAgain( choice );
 
         if( !this._RemainingRepeats.ContainsKey(choice) ) {
-            this._RemainingRepeats[choice] = this.Random.Next(choice.RepeatMaximumAmount - choice.RepeatMinimumAmount) - 1;
+            int range = choice.RepeatMaximumAmount ?? Int32.MaxValue;
+            range -= choice.RepeatMinimumAmount ?? 0;
+
+            this._RemainingRepeats[choice] = this.Random.Next(range) - 1;
         } else {
             this._RemainingRepeats[choice]--;
             if( !canRepeat ) {

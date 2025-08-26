@@ -59,7 +59,7 @@ internal partial class Program {
 
         Program.Decider.PendingDecision = Program.Decider.ProposeDecision();
 
-        Console.WriteLine( "Idea: "+Program.Decider.PendingDecision.Info );
+        Console.WriteLine( "Idea: "+Program.Decider.PendingDecision.Name );
     }
 
 

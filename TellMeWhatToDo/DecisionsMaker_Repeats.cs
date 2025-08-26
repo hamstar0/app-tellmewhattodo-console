@@ -56,12 +56,7 @@ public partial class DecisionsMaker {
         int traveled = 0;
 
         for( int i = this.Data.Options.Count - 1; i >= 0; i-- ) {
-            if( option.AfterRepeatMaximumSteps > -1 ) {
-                if( traveled >= option.AfterRepeatMaximumSteps ) {
-                    return false;
-                }
-            }
-            if( traveled >= option.AfterRepeatMinimumSteps ) {
+            if( traveled >= option.RepeatIntermissionMinimumDelay ) {
                 return true;
             }
 

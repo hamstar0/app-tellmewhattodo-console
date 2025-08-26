@@ -17,24 +17,24 @@ public partial class DecisionsMaker( DecisionOptions data ) {
     private IList<(bool isLastRepeat, DecisionOptions.OptionDef choice)> History
             = new List<(bool, DecisionOptions.OptionDef)>();
 
-    private IList<DecisionOptions.ContextDef> CurrentContexts = new List<DecisionOptions.ContextDef>();
+    private IList<string> CurrentContexts = new List<string>();
 
 
     public DecisionOptions.OptionDef? PendingDecision;
 
 
 
-    public void AddInitialContext( DecisionOptions.ContextDef context ) {
+    public void AddInitialContext( string context ) {
         this.CurrentContexts.Add( context );
     }
 
-    public IList<DecisionOptions.ContextDef> PickContexts() {
+    public IList<string> PickContexts() {
         return this.CurrentContexts
-            .Where( c => this.Random.NextSingle() < c.Density )
+            .Where( c => this.Random.NextSingle() >= 0.5f )
             .ToList();
     }
 
-    public IList<float> GetWeights( IList<DecisionOptions.ContextDef> contexts ) {
+    public IList<float> GetWeights( IList<string> contexts ) {
         int count = this.Data.Options.Count;
         IList<float> weights = new List<float>( count );
 
