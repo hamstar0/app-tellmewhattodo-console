@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 namespace TellMeWhatToDo;
 
 
-public partial class DecisionsMaker( DecisionOptions data ) {
-    public readonly DecisionOptions Options = data;
+public partial class DecisionsMaker( DecisionOption head ) {
+    public readonly DecisionOption Head = head;
 
 
     private Random Random = new Random();
 
-    private IList<(bool isLastRepeat, DecisionOptions.OptionDef choice)> History
-            = new List<(bool, DecisionOptions.OptionDef)>();
+    private IList<(bool isLastRepeat, DecisionOption choice)> History
+            = new List<(bool, DecisionOption)>();
 
     private IList<string> CurrentContexts = new List<string>();
 
 
-    public DecisionOptions.OptionDef? PendingDecision;
+    public DecisionOption? PendingDecision;
 
 
 
@@ -34,12 +34,12 @@ public partial class DecisionsMaker( DecisionOptions data ) {
             .ToList();
     }
 
-    public IDictionary<DecisionOptions.OptionDef, float> GetWeights( IList<string> contexts ) {
-        int count = this.Options.Options.Count;
-        var weights = new Dictionary<DecisionOptions.OptionDef, float>( count );
+    public IDictionary<DecisionOption, float> GetWeights( IList<string> contexts ) {
+        int count = this.Head.Options.Count;
+        var weights = new Dictionary<DecisionOption, float>( count );
 
         for( int i=0; i<count; i++ ) {
-            DecisionOptions.OptionDef o = this.Options.Options[i];
+            DecisionOption o = this.Head.Options[i];
             if( !o.MatchesContexts(contexts) ) {
                 continue;
             }

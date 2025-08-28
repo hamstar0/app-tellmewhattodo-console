@@ -8,11 +8,11 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker {
-    private IDictionary<DecisionOptions.OptionDef, int> _RemainingRepeats = new Dictionary<DecisionOptions.OptionDef, int>();
+    private IDictionary<DecisionOption, int> _RemainingRepeats = new Dictionary<DecisionOption, int>();
 
 
 
-    public bool IsRepeating( DecisionOptions.OptionDef option, out bool isContiguous ) {
+    public bool IsRepeating( DecisionOption option, out bool isContiguous ) {
         bool isNonContiguous = false;
 
         for( int i = this.History.Count - 1; i >= 0; i-- ) {
@@ -29,7 +29,7 @@ public partial class DecisionsMaker {
         return false;
     }
 
-    public int CountRepeatsSince( DecisionOptions.OptionDef option, int index, out int contiguousRepeats ) {
+    public int CountRepeatsSince( DecisionOption option, int index, out int contiguousRepeats ) {
         contiguousRepeats = 0;
         int repeats = 0;
         bool contiguityBroken = false;
@@ -52,7 +52,7 @@ public partial class DecisionsMaker {
         return repeats;
     }
 
-    public bool CanRepeatAnew( DecisionOptions.OptionDef option, out float weight ) {
+    public bool CanRepeatAnew( DecisionOption option, out float weight ) {
         if( option.RepeatIntermissionMinimumDelay is null ) {
             weight = option.Weight;
             return true;
@@ -60,7 +60,7 @@ public partial class DecisionsMaker {
 
         int traveled = 0;
 
-        for( int i = this.Options.Options.Count - 1; i >= 0; i-- ) {
+        for( int i = this.Head.Options.Count - 1; i >= 0; i-- ) {
             if( traveled >= option.RepeatIntermissionMinimumDelay ) {
                 weight = option.Weight;
                 return true;
@@ -73,7 +73,7 @@ public partial class DecisionsMaker {
         return false;
     }
 
-    public bool CanRepeatAgain( DecisionOptions.OptionDef option ) {
+    public bool CanRepeatAgain( DecisionOption option ) {
         int repeats = this.CountRepeatsSince( option, this.History.Count - 1, out _ );
 
         if( this._RemainingRepeats[option] <= 0 ) {

@@ -8,32 +8,32 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker {
-    public DecisionOptions.OptionDef ProposeDecision() {
-        DecisionOptions.OptionDef choice = null!;
+    public DecisionOption ProposeDecision() {
+        DecisionOption choice = null!;
 
         IList<string> contexts = this.PickContexts();
-        IDictionary<DecisionOptions.OptionDef, float> weights = this.GetWeights( contexts );
+        IDictionary<DecisionOption, float> weights = this.GetWeights( contexts );
 
         float r = this.Random.NextSingle() * weights.Sum(o => o.Value);
         float climb = 0f;
 
-        int optionCount = this.Options.Options.Count;
+        int optionCount = this.Head.Options.Count;
 
-        foreach( (DecisionOptions.OptionDef o, float w) in weights ) {
+        foreach( (DecisionOption o, float w) in weights ) {
             climb += w;
             if( r < climb ) {
                 choice = o;
             }
         }
         if( choice is null ) {
-            choice = this.Options.Options[optionCount - 1];
+            choice = this.Head.Options[optionCount - 1];
         }
 
         return choice;
     }
 
 
-    public void MakeDecision( DecisionOptions.OptionDef choice ) {
+    public void MakeDecision( DecisionOption choice ) {
         bool isRepeating = this.IsRepeating( choice, out _ );
         bool canRepeat = isRepeating
             ? this.CanRepeatAnew( choice, out _ )
