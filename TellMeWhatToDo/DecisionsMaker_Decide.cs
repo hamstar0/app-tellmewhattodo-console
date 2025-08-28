@@ -11,13 +11,12 @@ public partial class DecisionsMaker {
     public DecisionOption ProposeDecision() {
         DecisionOption choice = null!;
 
-        IList<string> contexts = this.PickContexts();
-        IDictionary<DecisionOption, float> weights = this.GetWeights( contexts );
+        IDictionary<DecisionOption, float> weights = this.GetWeights( this.CurrentContexts );
 
         float r = this.Random.NextSingle() * weights.Sum(o => o.Value);
         float climb = 0f;
 
-        int optionCount = this.Head.Options.Count;
+        int optionCount = this.Options.Count;
 
         foreach( (DecisionOption o, float w) in weights ) {
             climb += w;
@@ -26,7 +25,7 @@ public partial class DecisionsMaker {
             }
         }
         if( choice is null ) {
-            choice = this.Head.Options[optionCount - 1];
+            choice = this.Options[optionCount - 1];
         }
 
         return choice;
@@ -34,6 +33,8 @@ public partial class DecisionsMaker {
 
 
     public void MakeDecision( DecisionOption choice ) {
+        DecisionTree choiceTree = new DecisionTree( choice );
+
         bool isRepeating = this.IsRepeating( choice, out _ );
         bool canRepeat = isRepeating
             ? this.CanRepeatAnew( choice, out _ )
@@ -50,10 +51,10 @@ public partial class DecisionsMaker {
                 this._RemainingRepeats.Remove( choice );
             }
         }
-
+        
         this.History.Add( (
             isLastRepeat: isRepeating && !canRepeat,
-            choice: choice
+            choice: choiceTree
         ) );
     }
 }

@@ -47,13 +47,13 @@ internal partial class Program {
     private static bool LoadFile( string path ) {
         try {
             string fileData = File.ReadAllText( path );
-            DecisionOptions? data = JsonSerializer.Deserialize<DecisionOptions>( fileData );
+            DecisionOptionChoices? data = JsonSerializer.Deserialize<DecisionOptionChoices>( fileData );
 
             if( data is null ) {
                 return false;
             }
 
-            Program.Decider = new DecisionsMaker( data );
+            Program.Decider = new DecisionsMaker( data.Options );
         } catch {
             return false;
         }

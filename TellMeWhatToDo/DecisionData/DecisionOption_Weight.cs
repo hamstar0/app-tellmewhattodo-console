@@ -28,11 +28,11 @@ namespace TellMeWhatToDo;
 
 public partial class DecisionOption {
     public float ComputeWeight(
-                //DecisionsOption data,
+                DecisionOption? parent,
+                IList<string> nowContexts,
                 bool isRepeating,
                 bool isContiguous,
-                bool canRepeatAgain,
-                IList<string> nowContexts ) {
+                bool canRepeatAgain ) {
         float weight = this.Weight;
 
         if( isRepeating ) {
@@ -47,28 +47,22 @@ public partial class DecisionOption {
 
         bool hasSet = false;
 
-        foreach( (string[] ctxSetNames, float mul) in this.AssociatedContextsPreference ) {
-            if( ctxSetNames.All( c => nowContexts.Contains(c) ) ) {
-                weight *= mul;
-                hasSet = true;
+        foreach( SubOption subOption in parent?.SubOptions ?? [] ) {
+            foreach( (string[] ctxSetNames, float mul) in subOption.SubOptionContextsPreferences ) {
+                if( !this.HasAllContexts( ctxSetNames) ) {
+                    continue;
+                }
+
+                if( ctxSetNames.All( c => nowContexts.Contains(c) ) ) {
+                    weight *= mul;
+                    hasSet = true;
+                }
+            }
+
+            if( !hasSet && subOption.SubOptionContextsPreferences.Count > 0 ) {
+                weight *= subOption.UnmatchedSubContextsPreference ?? 0f;
             }
         }
-
-        if( !hasSet && this.AssociatedContextsPreference.Count > 0 ) {
-            weight *= this.UnmatchedAssociatedContextSetPreference ?? 0f;
-        }
-
-        //// Let the contexts also decide if they go together or not
-        //foreach( ContextDef nowContext1 in nowContexts ) {
-        //    foreach( ContextDef nowContext2 in nowContexts ) {
-        //        if( nowContext1 == nowContext2 ) {
-        //            continue;
-        //        }
-        //        if( nowContext1.CoContextWeightScales.ContainsKey(nowContext2.Name) ) {
-        //            weight *= nowContext1.CoContextWeightScales[nowContext2.Name];
-        //        }
-        //    }
-        //}
 
         return weight;
     }

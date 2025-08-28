@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace TellMeWhatToDo;
 
 
-public partial class DecisionsMaker( DecisionOption head ) {
-    public readonly DecisionOption Head = head;
+public partial class DecisionsMaker( IList<DecisionOption> options ) {
+    public IList<DecisionOption> Options { get; } = options;
 
 
     private Random Random = new Random();
 
-    private IList<(bool isLastRepeat, DecisionOption choice)> History
-            = new List<(bool, DecisionOption)>();
+    private IList<(bool isLastRepeat, DecisionTree choice)> History
+            = new List<(bool, DecisionTree)>();
 
     private IList<string> CurrentContexts = new List<string>();
 
@@ -28,19 +28,13 @@ public partial class DecisionsMaker( DecisionOption head ) {
         this.CurrentContexts.Add( context );
     }
 
-    public IList<string> PickContexts() {
-        return this.CurrentContexts
-            .Where( c => this.Random.NextSingle() >= 0.5f )
-            .ToList();
-    }
-
     public IDictionary<DecisionOption, float> GetWeights( IList<string> contexts ) {
-        int count = this.Head.Options.Count;
+        int count = this.Options.Count;
         var weights = new Dictionary<DecisionOption, float>( count );
 
         for( int i=0; i<count; i++ ) {
-            DecisionOption o = this.Head.Options[i];
-            if( !o.MatchesContexts(contexts) ) {
+            DecisionOption o = this.Options[i];
+            if( !o.HasAllContexts(contexts) ) {
                 continue;
             }
 
@@ -48,11 +42,11 @@ public partial class DecisionsMaker( DecisionOption head ) {
             bool canRepeatAgain = isRepeating && this.CanRepeatAgain( o );
 
             weights[o] = o.ComputeWeight(
-                //this.Data,
+                null,
+                contexts,
                 isRepeating,
                 isContiguous,
-                canRepeatAgain,
-                contexts
+                canRepeatAgain
             );
         }
 

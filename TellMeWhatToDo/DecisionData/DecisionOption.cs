@@ -39,7 +39,7 @@ namespace TellMeWhatToDo;
 /// <param name="subOptions">All available Options that can be generated to attach to the current
 /// (parent) Option.</param>
 public partial class DecisionOption(
-            IDictionary<string, float> currentContexts,
+            string[] currentContexts,
             string name,
             string? description,
             float weight,
@@ -51,8 +51,8 @@ public partial class DecisionOption(
             float? repeatIntermissionWeight,
             //IDictionary<string[], float> associatedContextsPreference,
             //float? unmatchedAssociatedContextsPreference,
-            IList<DecisionSubOption> subOptions ) {
-    public IDictionary<string, float> CurrentContexts { get; set; } = currentContexts;
+            IList<DecisionOption.SubOption> subOptions ) {
+    public string[] CurrentContexts { get; set; } = currentContexts;
     public string Name { get; set; } = name;
     public string? Description { get; set; } = description;
     public float Weight { get; set; } = weight;
@@ -64,11 +64,11 @@ public partial class DecisionOption(
     public float? RepeatIntermissionWeight { get; set; } = repeatIntermissionWeight;
     //public IDictionary<string[], float> AssociatedContextsPreference { get; set; } = associatedContextsPreference;
     //public float? UnmatchedAssociatedContextSetPreference { get; set; } = unmatchedAssociatedContextsPreference;
-    public IList<DecisionSubOption> SubOptions { get; set; } = subOptions;
+    public IList<SubOption> SubOptions { get; set; } = subOptions;
 
 
 
-    public bool MatchesContexts( IList<string> contexts ) {
-        return this.CurrentContexts.Keys.All( c => contexts.Contains(c) );
+    public bool HasAllContexts( IList<string> contexts ) {
+        return contexts.All( c => this.CurrentContexts.Contains(c) );
     }
 }

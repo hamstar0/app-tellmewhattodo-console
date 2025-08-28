@@ -16,7 +16,7 @@ public partial class DecisionsMaker {
         bool isNonContiguous = false;
 
         for( int i = this.History.Count - 1; i >= 0; i-- ) {
-            if( this.History[i].choice == option ) {
+            if( this.History[i].choice.Head == option ) {
                 isContiguous = !isNonContiguous;
 
                 return !this.History[i].isLastRepeat;
@@ -35,7 +35,7 @@ public partial class DecisionsMaker {
         bool contiguityBroken = false;
 
         for( int i = index; i >= 0; i-- ) {
-            if( this.History[i].choice == option ) {
+            if( this.History[i].choice.Head == option ) {
                 if( this.History[i].isLastRepeat ) {
                     break;
                 }
@@ -60,7 +60,7 @@ public partial class DecisionsMaker {
 
         int traveled = 0;
 
-        for( int i = this.Head.Options.Count - 1; i >= 0; i-- ) {
+        for( int i = this.Options.Count - 1; i >= 0; i-- ) {
             if( traveled >= option.RepeatIntermissionMinimumDelay ) {
                 weight = option.Weight;
                 return true;
