@@ -46,24 +46,28 @@ public partial class DecisionOption {
         }
 
         bool hasSet = false;
+        int prefFactors = 1;
 
         foreach( SubOption subOption in parent?.SubOptions ?? [] ) {
-            foreach( (string[] ctxSetNames, float mul) in subOption.SubOptionContextsPreferences ) {
-                if( !this.HasAllContexts( ctxSetNames) ) {
+            foreach( (string[] subContexts, float pref) in subOption.SubOptionContextsPreferences ) {
+                if( !this.HasAllContexts(subContexts) ) {
+                    continue;
+                }
+                if( !subContexts.All(c => nowContexts.Contains(c)) ) {
                     continue;
                 }
 
-                if( ctxSetNames.All( c => nowContexts.Contains(c) ) ) {
-                    weight *= mul;
-                    hasSet = true;
-                }
+                weight += pref;
+                hasSet = true;
+                prefFactors++;
             }
 
             if( !hasSet && subOption.SubOptionContextsPreferences.Count > 0 ) {
-                weight *= subOption.UnmatchedSubContextsPreference ?? 0f;
+                weight += subOption.UnmatchedSubContextsPreference ?? 0f;
+                prefFactors++;
             }
         }
 
-        return weight;
+        return weight / (float)prefFactors;
     }
 }

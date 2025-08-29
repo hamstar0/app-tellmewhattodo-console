@@ -20,7 +20,7 @@ public partial class DecisionsMaker( IList<DecisionOption> options ) {
     private IList<string> CurrentContexts = new List<string>();
 
 
-    public DecisionOption? PendingDecision;
+    public DecisionTree? PendingDecision;
 
 
 

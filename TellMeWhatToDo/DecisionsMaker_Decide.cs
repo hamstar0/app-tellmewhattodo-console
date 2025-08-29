@@ -8,7 +8,7 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker {
-    public DecisionOption ProposeDecision() {
+    public DecisionTree ProposeDecision() {
         DecisionOption choice = null!;
 
         IDictionary<DecisionOption, float> weights = this.GetWeights( this.CurrentContexts );
@@ -28,33 +28,31 @@ public partial class DecisionsMaker {
             choice = this.Options[optionCount - 1];
         }
 
-        return choice;
+        return DecisionTree.Generate( choice, this.Options );
     }
 
 
-    public void MakeDecision( DecisionOption choice ) {
-        DecisionTree choiceTree = new DecisionTree( choice );
-
-        bool isRepeating = this.IsRepeating( choice, out _ );
+    public void MakeDecision( DecisionTree choice ) {
+        bool isRepeating = this.IsRepeating( choice.Head, out _ );
         bool canRepeat = isRepeating
-            ? this.CanRepeatAnew( choice, out _ )
-            : this.CanRepeatAgain( choice );
+            ? this.CanRepeatAnew( choice.Head, out _ )
+            : this.CanRepeatAgain( choice.Head );
 
-        if( !this._RemainingRepeats.ContainsKey(choice) ) {
-            int range = choice.RepeatMaximumAmount ?? Int32.MaxValue;
-            range -= choice.RepeatMinimumAmount ?? 0;
+        if( !this._RemainingRepeats.ContainsKey(choice.Head) ) {
+            int range = choice.Head.RepeatMaximumAmount ?? Int32.MaxValue;
+            range -= choice.Head.RepeatMinimumAmount ?? 0;
 
-            this._RemainingRepeats[choice] = this.Random.Next(range) - 1;
+            this._RemainingRepeats[choice.Head] = this.Random.Next(range) - 1;
         } else {
-            this._RemainingRepeats[choice]--;
+            this._RemainingRepeats[choice.Head]--;
             if( !canRepeat ) {
-                this._RemainingRepeats.Remove( choice );
+                this._RemainingRepeats.Remove( choice.Head );
             }
         }
-        
+
         this.History.Add( (
             isLastRepeat: isRepeating && !canRepeat,
-            choice: choiceTree
+            choice: choice
         ) );
     }
 }

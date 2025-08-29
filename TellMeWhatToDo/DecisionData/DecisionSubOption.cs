@@ -9,6 +9,18 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionOption {
+    /// <summary>
+    /// Defines decision making template data for all options of the given contexts that pertain to
+    /// another, unspecified (parent) context.
+    /// </summary>
+    /// <param name="subOptionContextsPreferences">How preferred any given choice of sub-Option by
+    /// the given context sets may be.</param>
+    /// <param name="unmatchedSubContextsPreference">How preferred all choices of sub-Option not of
+    /// the given context sets may be.</param>
+    /// <param name="comboChance"></param>
+    /// <param name="comboingWeight"></param>
+    /// <param name="comboIntermissionDelay"></param>
+    /// <param name="comboIntermissionWeight"></param>
     public class SubOption(
             IDictionary<string[], float> subOptionContextsPreferences,
             float? unmatchedSubContextsPreference,
