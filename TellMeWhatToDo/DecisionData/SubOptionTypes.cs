@@ -19,7 +19,7 @@ namespace TellMeWhatToDo;
 ///// the given context sets may be.</param>
 /// <param name="maxDepthByContext">How preferred any given choice of sub-Option by
 /// the given context sets may be.</param>
-public class SubOptionSlot(
+public class SubOptionTypes(
             string connectionName,
             IDictionary<string[], float> subOptionContextsPreferences,
             //float? unmatchedSubContextsPreference,

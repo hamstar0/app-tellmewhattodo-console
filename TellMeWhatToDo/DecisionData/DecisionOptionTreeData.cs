@@ -15,8 +15,8 @@ public partial class DecisionOptionTreeData( DecisionOption head ) {
                 int depth ) {
         DecisionOptionTreeData headTree = new DecisionOptionTreeData( head );
 
-        foreach( SubOptionSlot sub in head.SubOptionsSlots ?? [] ) {
-            headTree.FillSlot( decider, sub, depth );
+        foreach( string subName in head.SubOptionsSlotsByName ?? [] ) {
+            headTree.FillSlot( decider, decider.Data.SubOptionTypes[subName], depth );
         }
 
         return headTree;
@@ -31,7 +31,7 @@ public partial class DecisionOptionTreeData( DecisionOption head ) {
 
     public void FillSlot(
                 DecisionsMaker decider,
-                SubOptionSlot slotDef,
+                SubOptionTypes slotDef,
                 int currentDepth ) {
         foreach( DecisionOption option in decider.Options ) {
             bool isBreadthRepeating, isBreadthContiguous, canBreadthRepeatAgain;

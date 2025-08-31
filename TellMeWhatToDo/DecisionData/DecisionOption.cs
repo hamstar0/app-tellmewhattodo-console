@@ -36,7 +36,7 @@ namespace TellMeWhatToDo;
 ///// <param name="unmatchedAssociatedContextsPreference">Applies additional weight scaling
 ///// (multiplier) when no matched parent sets exist. If `associatedContextsPreference` has a
 ///// value, this defaults to 0. Otherwise, it is skipped.</param>
-/// <param name="subOptionsSlots">All available Options that can be generated to attach to the current
+/// <param name="subOptionsSlotsByName">All available Options that can be generated to attach to the current
 /// (parent) Option.</param>
 ///// <param name="subOptionAbsenceWeight">Weight factor for not having any sub-Option generated.
 ///// Defaults to 0.</param>
@@ -53,7 +53,7 @@ public partial class DecisionOption(
             float? repeatIntermissionWeight,
             //IDictionary<string[], float> associatedContextsPreference,
             //float? unmatchedAssociatedContextsPreference,
-            IList<DecisionOption.SubOptionSlot>? subOptionsSlots ) {
+            IList<string>? subOptionsSlotsByName ) {
     public string[] CurrentContexts { get; set; } = currentContexts;
     public string Name { get; set; } = name;
     public string? Description { get; set; } = description;
@@ -66,7 +66,7 @@ public partial class DecisionOption(
     public float? RepeatIntermissionWeight { get; set; } = repeatIntermissionWeight;
     //public IDictionary<string[], float> AssociatedContextsPreference { get; set; } = associatedContextsPreference;
     //public float? UnmatchedAssociatedContextSetPreference { get; set; } = unmatchedAssociatedContextsPreference;
-    public IList<SubOptionSlot>? SubOptionsSlots { get; set; } = subOptionsSlots;
+    public IList<string>? SubOptionsSlotsByName { get; set; } = subOptionsSlotsByName;
 
 
 

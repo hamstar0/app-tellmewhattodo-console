@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace TellMeWhatToDo;
 
 
-public partial class DecisionsMaker( IList<DecisionOption> options ) {
-    public readonly IReadOnlyList<DecisionOption> Options = options.ToList().AsReadOnly();
+public partial class DecisionsMaker( DecisionOptionsData optionsData ) {
+    public DecisionOptionsData Data { get; } = optionsData;
 
     public readonly Random Random = new Random();
 
@@ -29,11 +29,10 @@ public partial class DecisionsMaker( IList<DecisionOption> options ) {
     }
 
     public IDictionary<DecisionOption, float> GetWeights( IList<string> contexts ) {
-        int count = this.Options.Count;
+        int count = this.Data.Options.Count;
         var weights = new Dictionary<DecisionOption, float>( count );
 
-        for( int i=0; i<count; i++ ) {
-            DecisionOption o = this.Options[i];
+        foreach( DecisionOption o in this.Data.Options.Values ) {
             if( !o.HasAllContexts(contexts) ) {
                 continue;
             }

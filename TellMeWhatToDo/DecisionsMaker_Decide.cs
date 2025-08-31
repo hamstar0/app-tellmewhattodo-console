@@ -8,27 +8,28 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker {
-    public DecisionOptionTreeData ProposeDecision() {
-        DecisionOption choice = null!;
-
+    public DecisionOptionTreeData? ProposeDecision() {
         IDictionary<DecisionOption, float> weights = this.GetWeights( this.CurrentContexts );
 
         float r = this.Random.NextSingle() * weights.Sum(o => o.Value);
         float climb = 0f;
 
-        int optionCount = this.Options.Count;
+        int optionCount = this.Data.Options.Count;
+
+        DecisionOption? choice = null;
 
         foreach( (DecisionOption o, float w) in weights ) {
             climb += w;
-            if( r < climb ) {
-                choice = o;
+            choice = o;
+
+            if( r >= climb ) {
+                break;
             }
         }
-        if( choice is null ) {
-            choice = this.Options[optionCount - 1];
-        }
 
-        return DecisionOptionTreeData.Generate( this, choice, 0 );
+        return choice is not null
+            ? DecisionOptionTreeData.Generate( this, choice, 0 )
+            : null;
     }
 
 

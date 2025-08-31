@@ -59,7 +59,11 @@ internal partial class Program {
 
         Program.Decider.PendingDecision = Program.Decider.ProposeDecision();
 
-        Console.WriteLine( Program.Decider.PendingDecision.Render() );
+        if( Program.Decider.PendingDecision is not null ) {
+            Console.WriteLine( Program.Decider.PendingDecision.Render() );
+        } else {
+            Console.WriteLine( "No decision picked." );
+        }
     }
 
 
