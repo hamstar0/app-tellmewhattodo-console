@@ -36,8 +36,10 @@ namespace TellMeWhatToDo;
 ///// <param name="unmatchedAssociatedContextsPreference">Applies additional weight scaling
 ///// (multiplier) when no matched parent sets exist. If `associatedContextsPreference` has a
 ///// value, this defaults to 0. Otherwise, it is skipped.</param>
-/// <param name="subOptions">All available Options that can be generated to attach to the current
+/// <param name="subOptionsSlots">All available Options that can be generated to attach to the current
 /// (parent) Option.</param>
+///// <param name="subOptionAbsenceWeight">Weight factor for not having any sub-Option generated.
+///// Defaults to 0.</param>
 public partial class DecisionOption(
             string[] currentContexts,
             string name,
@@ -51,7 +53,7 @@ public partial class DecisionOption(
             float? repeatIntermissionWeight,
             //IDictionary<string[], float> associatedContextsPreference,
             //float? unmatchedAssociatedContextsPreference,
-            IList<DecisionOption.SubOption> subOptions ) {
+            IList<DecisionOption.SubOption>? subOptionsSlots ) {
     public string[] CurrentContexts { get; set; } = currentContexts;
     public string Name { get; set; } = name;
     public string? Description { get; set; } = description;
@@ -64,11 +66,21 @@ public partial class DecisionOption(
     public float? RepeatIntermissionWeight { get; set; } = repeatIntermissionWeight;
     //public IDictionary<string[], float> AssociatedContextsPreference { get; set; } = associatedContextsPreference;
     //public float? UnmatchedAssociatedContextSetPreference { get; set; } = unmatchedAssociatedContextsPreference;
-    public IList<SubOption> SubOptions { get; set; } = subOptions;
+    public IList<SubOption>? SubOptionsSlots { get; set; } = subOptionsSlots;
 
 
 
     public bool HasAllContexts( IList<string> contexts ) {
         return contexts.All( c => this.CurrentContexts.Contains(c) );
+    }
+
+    public List<string> Render( string indent = "" ) {
+        string line1 = indent + "Idea: " + this.Name;
+
+        if( this.Description is not null ) {
+            return new List<string>( [line1, indent + "Info: " + this.Description] );
+        } else {
+            return new List<string>( [line1] );
+        }
     }
 }

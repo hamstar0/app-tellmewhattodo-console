@@ -28,8 +28,6 @@ namespace TellMeWhatToDo;
 
 public partial class DecisionOption {
     public float ComputeWeight(
-                DecisionOption? parent,
-                IList<string> nowContexts,
                 bool isRepeating,
                 bool isContiguous,
                 bool canRepeatAgain ) {
@@ -45,29 +43,6 @@ public partial class DecisionOption {
             }
         }
 
-        bool hasSet = false;
-        int prefFactors = 1;
-
-        foreach( SubOption subOption in parent?.SubOptions ?? [] ) {
-            foreach( (string[] subContexts, float pref) in subOption.SubOptionContextsPreferences ) {
-                if( !this.HasAllContexts(subContexts) ) {
-                    continue;
-                }
-                if( !subContexts.All(c => nowContexts.Contains(c)) ) {
-                    continue;
-                }
-
-                weight += pref;
-                hasSet = true;
-                prefFactors++;
-            }
-
-            if( !hasSet && subOption.SubOptionContextsPreferences.Count > 0 ) {
-                weight += subOption.UnmatchedSubContextsPreference ?? 0f;
-                prefFactors++;
-            }
-        }
-
-        return weight / (float)prefFactors;
+        return weight;
     }
 }

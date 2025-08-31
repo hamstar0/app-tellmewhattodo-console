@@ -9,10 +9,10 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker( IList<DecisionOption> options ) {
-    public IList<DecisionOption> Options { get; } = options;
+    public readonly IReadOnlyList<DecisionOption> Options = options.ToList().AsReadOnly();
 
+    public readonly Random Random = new Random();
 
-    private Random Random = new Random();
 
     private IList<(bool isLastRepeat, DecisionTree choice)> History
             = new List<(bool, DecisionTree)>();
@@ -42,8 +42,6 @@ public partial class DecisionsMaker( IList<DecisionOption> options ) {
             bool canRepeatAgain = isRepeating && this.CanRepeatAgain( o );
 
             weights[o] = o.ComputeWeight(
-                null,
-                contexts,
                 isRepeating,
                 isContiguous,
                 canRepeatAgain

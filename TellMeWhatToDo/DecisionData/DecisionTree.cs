@@ -9,31 +9,61 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionTree( DecisionOption head ) {
-    public static DecisionTree Generate( DecisionOption head, IList<DecisionOption> options ) {
-        var tree = new DecisionTree( head );
+    public static DecisionTree Generate(
+                DecisionsMaker decider,
+                DecisionOption head,
+                int depth ) {
+        DecisionTree headTree = new DecisionTree( head );
 
-        foreach( DecisionOption.SubOption sub in head.SubOptions ) {
-            f
+        foreach( DecisionOption.SubOption sub in head.SubOptionsSlots ?? [] ) {
+            headTree.FillSlot( decider, sub, depth );
         }
 
-        return tree;
+        return headTree;
     }
 
 
 
     public DecisionOption Head { get; } = head;
-    public IList<(DecisionOption, DecisionTree)> Tree { get; } = new List<(DecisionOption, DecisionTree)>();
+    public IList<(DecisionOption, DecisionTree?)> Tree { get; } = new List<(DecisionOption, DecisionTree?)>();
 
 
 
-    public IList<string> Render() {
-        var output = new List<string>( ["Idea: " + this.Head.Name] );
+    public void FillSlot(
+                DecisionsMaker decider,
+                DecisionOption.SubOption slotDef,
+                int currentDepth ) {
+        foreach( DecisionOption option in decider.Options ) {
+            bool isBreadthRepeating, isBreadthContiguous, canBreadthRepeatAgain;
 
-        if( this.Head.Description is not null ) {
-            output.Add( this.Head.Description );
+            float optionWeight = option.ComputeWeight(
+                isBreadthRepeating,
+                isBreadthContiguous,
+                canBreadthRepeatAgain
+            );
+            float subWeight = slotDef.ComputeWeight( option );
+
+            pool[ option ] = optionWeight * subWeight;
         }
 
         f
+
+        var supOptionTree = DecisionTree.Generate( decider, option, currentDepth++ );
+
+        this.Tree.Add( (option, supOptionTree) );
+    }
+
+    public List<string> Render( string indent = "" ) {
+        List<string> output = this.Head.Render( indent );
+
+        if( this.Tree is not null ) {
+            foreach( (DecisionOption o, DecisionTree? t) in this.Tree ) {
+                output.AddRange( o.Render( indent + "  " ) );
+                if( t is not null ) {
+                    output.AddRange( t.Render( indent + "  " ) );
+                }
+            }
+        }
 
         return output;
     }
