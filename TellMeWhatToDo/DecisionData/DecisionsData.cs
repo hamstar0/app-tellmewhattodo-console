@@ -13,9 +13,9 @@ namespace TellMeWhatToDo;
 /// </summary>
 /// <param name="options"></param>
 /// <param name="subOptionTypes"></param>
-public partial class DecisionOptionsData(
+public partial class DecisionsData(
             IDictionary<string, DecisionOption> options,
-            IDictionary<string, SubOptionTypes> subOptionTypes ) {
+            IDictionary<string, DecisionSubOption> subOptionTypes ) {
     public IDictionary<string, DecisionOption> Options { get; set; } = options;
-    public IDictionary<string, SubOptionTypes> SubOptionTypes { get; set; } = subOptionTypes;
+    public IDictionary<string, DecisionSubOption> SubOptionTypes { get; set; } = subOptionTypes;
 }

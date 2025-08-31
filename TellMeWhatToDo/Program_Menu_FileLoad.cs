@@ -47,7 +47,7 @@ internal partial class Program {
     private static bool LoadFile( string path ) {
         try {
             string fileData = File.ReadAllText( path );
-            DecisionOptionsData? data = JsonSerializer.Deserialize<DecisionOptionsData>( fileData );
+            DecisionsData? data = JsonSerializer.Deserialize<DecisionsData>( fileData );
 
             if( data is null ) {
                 return false;

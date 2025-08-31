@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace TellMeWhatToDo;
 
 
-public partial class DecisionsMaker( DecisionOptionsData optionsData ) {
-    public DecisionOptionsData Data { get; } = optionsData;
+public partial class DecisionsMaker( DecisionsData optionsData ) {
+    public DecisionsData Data { get; } = optionsData;
 
     public readonly Random Random = new Random();
 

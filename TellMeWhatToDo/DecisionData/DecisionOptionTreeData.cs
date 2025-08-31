@@ -31,7 +31,7 @@ public partial class DecisionOptionTreeData( DecisionOption head ) {
 
     public void FillSlot(
                 DecisionsMaker decider,
-                SubOptionTypes slotDef,
+                DecisionSubOption slotDef,
                 int currentDepth ) {
         foreach( DecisionOption option in decider.Options ) {
             bool isBreadthRepeating, isBreadthContiguous, canBreadthRepeatAgain;
