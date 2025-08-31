@@ -8,7 +8,7 @@ namespace TellMeWhatToDo;
 
 
 public partial class DecisionsMaker {
-    public DecisionTree ProposeDecision() {
+    public DecisionOptionTreeData ProposeDecision() {
         DecisionOption choice = null!;
 
         IDictionary<DecisionOption, float> weights = this.GetWeights( this.CurrentContexts );
@@ -28,11 +28,11 @@ public partial class DecisionsMaker {
             choice = this.Options[optionCount - 1];
         }
 
-        return DecisionTree.Generate( choice, this.Options );
+        return DecisionOptionTreeData.Generate( this, choice, 0 );
     }
 
 
-    public void MakeDecision( DecisionTree choice ) {
+    public void MakeDecision( DecisionOptionTreeData choice ) {
         bool isRepeating = this.IsRepeating( choice.Head, out _ );
         bool canRepeat = isRepeating
             ? this.CanRepeatAnew( choice.Head, out _ )

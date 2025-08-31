@@ -14,13 +14,13 @@ public partial class DecisionsMaker( IList<DecisionOption> options ) {
     public readonly Random Random = new Random();
 
 
-    private IList<(bool isLastRepeat, DecisionTree choice)> History
-            = new List<(bool, DecisionTree)>();
+    private IList<(bool isLastRepeat, DecisionOptionTreeData choice)> History
+            = new List<(bool, DecisionOptionTreeData)>();
 
     private IList<string> CurrentContexts = new List<string>();
 
 
-    public DecisionTree? PendingDecision;
+    public DecisionOptionTreeData? PendingDecision;
 
 
 

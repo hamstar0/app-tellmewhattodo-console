@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace TellMeWhatToDo;
 
 
-public partial class DecisionTree( DecisionOption head ) {
-    public static DecisionTree Generate(
+public partial class DecisionOptionTreeData( DecisionOption head ) {
+    public static DecisionOptionTreeData Generate(
                 DecisionsMaker decider,
                 DecisionOption head,
                 int depth ) {
-        DecisionTree headTree = new DecisionTree( head );
+        DecisionOptionTreeData headTree = new DecisionOptionTreeData( head );
 
-        foreach( DecisionOption.SubOption sub in head.SubOptionsSlots ?? [] ) {
+        foreach( SubOptionSlot sub in head.SubOptionsSlots ?? [] ) {
             headTree.FillSlot( decider, sub, depth );
         }
 
@@ -25,13 +25,13 @@ public partial class DecisionTree( DecisionOption head ) {
 
 
     public DecisionOption Head { get; } = head;
-    public IList<(DecisionOption, DecisionTree?)> Tree { get; } = new List<(DecisionOption, DecisionTree?)>();
+    public IList<(DecisionOption, DecisionOptionTreeData?)> Tree { get; } = new List<(DecisionOption, DecisionOptionTreeData?)>();
 
 
 
     public void FillSlot(
                 DecisionsMaker decider,
-                DecisionOption.SubOption slotDef,
+                SubOptionSlot slotDef,
                 int currentDepth ) {
         foreach( DecisionOption option in decider.Options ) {
             bool isBreadthRepeating, isBreadthContiguous, canBreadthRepeatAgain;
@@ -48,7 +48,7 @@ public partial class DecisionTree( DecisionOption head ) {
 
         f
 
-        var supOptionTree = DecisionTree.Generate( decider, option, currentDepth++ );
+        var supOptionTree = DecisionOptionTreeData.Generate( decider, option, currentDepth++ );
 
         this.Tree.Add( (option, supOptionTree) );
     }
@@ -57,7 +57,7 @@ public partial class DecisionTree( DecisionOption head ) {
         List<string> output = this.Head.Render( indent );
 
         if( this.Tree is not null ) {
-            foreach( (DecisionOption o, DecisionTree? t) in this.Tree ) {
+            foreach( (DecisionOption o, DecisionOptionTreeData? t) in this.Tree ) {
                 output.AddRange( o.Render( indent + "  " ) );
                 if( t is not null ) {
                     output.AddRange( t.Render( indent + "  " ) );
