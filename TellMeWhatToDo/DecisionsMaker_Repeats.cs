@@ -60,7 +60,7 @@ public partial class DecisionsMaker {
 
         int traveled = 0;
 
-        for( int i = this.Options.Count - 1; i >= 0; i-- ) {
+        for( int i = this.Data.Options.Count - 1; i >= 0; i-- ) {
             if( traveled >= option.RepeatIntermissionMinimumDelay ) {
                 weight = option.Weight;
                 return true;

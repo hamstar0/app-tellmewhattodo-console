@@ -28,7 +28,7 @@ public partial class DecisionsMaker {
         }
 
         return choice is not null
-            ? DecisionOptionTreeData.Generate( this, choice, 0 )
+            ? DecisionOptionTreeData.Generate( this.Random, this, choice, 0 )
             : null;
     }
 
