@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 namespace TellMeWhatToDo;
 
 
-public partial class DecisionOptionTreeData( DecisionOption head ) {
+public partial class DecisionOptionConnector( DecisionOption head ) {
     public class Node(
                 DecisionOption nodeOption,
-                DecisionOptionTreeData? nodeTree ) {
+                DecisionOptionConnector? nodeTree ) {
         public DecisionOption Option = nodeOption;
-        public DecisionOptionTreeData? NodeTree = nodeTree;
+        public DecisionOptionConnector? NodeTree = nodeTree;
     }
 
 
 
-    public static DecisionOptionTreeData Generate(
+    public static DecisionOptionConnector Generate(
                 Random random,
                 DecisionsMaker decider,
                 DecisionOption head,
                 int depth ) {
-        DecisionOptionTreeData headTree = new DecisionOptionTreeData( head );
+        DecisionOptionConnector headTree = new DecisionOptionConnector( head );
 
         int slot = 0;
 
@@ -77,7 +77,7 @@ public partial class DecisionOptionTreeData( DecisionOption head ) {
             throw new Exception( "No sub-Option selected" );
         }
 
-        var choiceTree = DecisionOptionTreeData.Generate( random, decider, choice, currentDepth++ );
+        var choiceTree = DecisionOptionConnector.Generate( random, decider, choice, currentDepth++ );
 
         this.Tree.Add( new Node(choice, choiceTree ) );
     }

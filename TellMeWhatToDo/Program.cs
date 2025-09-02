@@ -24,7 +24,7 @@ internal partial class Program {
         new Dictionary<string, DecisionOption>{ {
             "Square room",
             new DecisionOption(
-                contexts: [],
+                contexts: [ "Default" ],
                 name: "Square room",
                 description: null,
                 weight: 1f,
@@ -34,17 +34,32 @@ internal partial class Program {
                 isRepeatingContiguouslyWeightScale: null,
                 repeatIntermissionMinimumDelay: null,
                 repeatIntermissionWeight: null,
-                subOptionsSlotsByName: null
+                subOptionsSlotsByName: ["General door", "General door"]
+            )
+{
+            } }, {
+            "Hallway",
+            new DecisionOption(
+                contexts: [ "Default" ],
+                name: "Hallway",
+                description: null,
+                weight: 1f,
+                repeatMinimumAmount: null,
+                repeatMaximumAmount: null,
+                isRepeatingWeightScale: null,
+                isRepeatingContiguouslyWeightScale: null,
+                repeatIntermissionMinimumDelay: null,
+                repeatIntermissionWeight: null,
+                subOptionsSlotsByName: ["General door", "General door"]
             )
         } },
         new Dictionary<string, DecisionSubOption>{ {
             "General door",
             new DecisionSubOption(
                 connectionName: "General door",
-                subOptionContextsPreferences: new Dictionary<string[], float> {
-                    { ["Square room"], 1f }
-                },
-                maxDepthByContext: null
+                parentContextsPreferences: new Dictionary<string[], float> {
+                    { ["Square room", "Hallway"], 1f }
+                }
             )
         } }
     ) );
