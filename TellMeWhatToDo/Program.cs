@@ -53,9 +53,9 @@ internal partial class Program {
                 subOptionsSlotsByName: ["General door", "General door"]
             )
         } },
-        new Dictionary<string, DecisionSubOption>{ {
+        new Dictionary<string, DecisionSubOptionSlotDef>{ {
             "General door",
-            new DecisionSubOption(
+            new DecisionSubOptionSlotDef(
                 connectionName: "General door",
                 parentContextsPreferences: new Dictionary<string[], float> {
                     { ["Square room", "Hallway"], 1f }

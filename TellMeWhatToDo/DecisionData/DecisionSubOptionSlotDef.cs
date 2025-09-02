@@ -17,7 +17,7 @@ namespace TellMeWhatToDo;
 /// parent) may be to the given (sub) Option.</param>
 ///// <param name="unmatchedSubContextsPreference">How preferred not having any of the given context
 /////sets may not be to the given (sub) Option.</param>
-public class DecisionSubOption(
+public class DecisionSubOptionSlotDef(
             string connectionName,
             IDictionary<string[], float> parentContextsPreferences
             //float? unmatchedSubContextsPreference,
