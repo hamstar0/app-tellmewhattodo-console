@@ -11,7 +11,7 @@ namespace TellMeWhatToDo;
 /// <summary>
 /// Defines a given available decision option. JSON-able.
 /// </summary>
-/// <param name="currentContexts">List of contexts this Option pertains to. Sub-Options evaluate
+/// <param name="contexts">List of contexts this Option pertains to. Sub-Options evaluate
 /// their weights against these contexts and their given weights.</param>
 /// <param name="name">Name.</param>
 /// <param name="description">Optional description.</param>
@@ -41,7 +41,7 @@ namespace TellMeWhatToDo;
 ///// <param name="subOptionAbsenceWeight">Weight factor for not having any sub-Option generated.
 ///// Defaults to 0.</param>
 public partial class DecisionOption(
-            string[] currentContexts,
+            string[] contexts,
             string name,
             string? description,
             float weight,
@@ -54,7 +54,7 @@ public partial class DecisionOption(
             //IDictionary<string[], float> associatedContextsPreference,
             //float? unmatchedAssociatedContextsPreference,
             IList<string>? subOptionsSlotsByName ) {
-    public string[] CurrentContexts { get; set; } = currentContexts;
+    public string[] Contexts { get; set; } = contexts;
     public string Name { get; set; } = name;
     public string? Description { get; set; } = description;
     public float Weight { get; set; } = weight;
@@ -71,7 +71,7 @@ public partial class DecisionOption(
 
 
     public bool HasAllContexts( IList<string> contexts ) {
-        return contexts.All( c => this.CurrentContexts.Contains(c) );
+        return contexts.All( c => this.Contexts.Contains(c) );
     }
 
     public List<string> Render( string indent = "" ) {

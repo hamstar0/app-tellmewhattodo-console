@@ -19,11 +19,35 @@ internal partial class Program {
 
     private static string? CurrentDecisionsFileName = null;
 
-    private static DecisionsMaker? Decider = null;
-    //private static DecisionsMaker? Decider = new DecisionsMaker( new DecisionsData(
-    //    [new DecisionsData.Option("Square room", 1f, 0, 9999, 1f, 0.9f, 3, Int32.MaxValue, 1f, 1f, [] )],
-    //    [new DecisionsData.Context("Default", 1f, 0f, 1f, 5, 50, 10, new Dictionary<string, float>())]
-    //) );
+    //private static DecisionsMaker? Decider = null;
+    private static DecisionsMaker? Decider = new DecisionsMaker( new DecisionsData(
+        new Dictionary<string, DecisionOption>{ {
+            "Square room",
+            new DecisionOption(
+                contexts: [],
+                name: "Square room",
+                description: null,
+                weight: 1f,
+                repeatMinimumAmount: null,
+                repeatMaximumAmount: null,
+                isRepeatingWeightScale: null,
+                isRepeatingContiguouslyWeightScale: null,
+                repeatIntermissionMinimumDelay: null,
+                repeatIntermissionWeight: null,
+                subOptionsSlotsByName: null
+            )
+        } },
+        new Dictionary<string, DecisionSubOption>{ {
+            "General door",
+            new DecisionSubOption(
+                connectionName: "General door",
+                subOptionContextsPreferences: new Dictionary<string[], float> {
+                    { ["Square room"], 1f }
+                },
+                maxDepthByContext: null
+            )
+        } }
+    ) );
 
     private static MenuType CurrentMenu = MenuType.Main;
 

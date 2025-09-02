@@ -13,8 +13,8 @@ namespace TellMeWhatToDo;
 /// another, unspecified (parent) context.
 /// </summary>
 /// <param name="connectionName">Name for connector.</param>
-/// <param name="subOptionContextsPreferences">How preferred any given context sets may be to the
-/// given (sub) Option.</param>
+/// <param name="subOptionContextsPreferences">How preferred any of the given context sets (of the
+/// parent) may be to the given (sub) Option.</param>
 ///// <param name="unmatchedSubContextsPreference">How preferred not having any of the given context
 /////sets may not be to the given (sub) Option.</param>
 /// <param name="maxDepthByContext">How much depth is allowed by this given sub Option. Defaults to
