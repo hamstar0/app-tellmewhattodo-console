@@ -28,7 +28,7 @@ public partial class DecisionsMaker {
         }
 
         return choice is not null
-            ? DecisionOptionConnector.Generate( this.Random, this, choice, 0 )
+            ? DecisionOptionConnector.Generate( this.Random, this.Data, choice, 0 )
             : null;
     }
 

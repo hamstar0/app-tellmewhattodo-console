@@ -20,49 +20,72 @@ internal partial class Program {
     private static string? CurrentDecisionsFileName = null;
 
     //private static DecisionsMaker? Decider = null;
-    private static DecisionsMaker? Decider = new DecisionsMaker( new DecisionsData(
-        new Dictionary<string, DecisionOption>{ {
-            "Square room",
-            new DecisionOption(
-                contexts: [ "Default" ],
-                name: "Square room",
-                description: null,
-                weight: 1f,
-                repeatMinimumAmount: null,
-                repeatMaximumAmount: null,
-                isRepeatingWeightScale: null,
-                isRepeatingContiguouslyWeightScale: null,
-                repeatIntermissionMinimumDelay: null,
-                repeatIntermissionWeight: null,
-                subOptionsSlotsByName: ["General door", "General door"]
-            )
-{
-            } }, {
-            "Hallway",
-            new DecisionOption(
-                contexts: [ "Default" ],
-                name: "Hallway",
-                description: null,
-                weight: 1f,
-                repeatMinimumAmount: null,
-                repeatMaximumAmount: null,
-                isRepeatingWeightScale: null,
-                isRepeatingContiguouslyWeightScale: null,
-                repeatIntermissionMinimumDelay: null,
-                repeatIntermissionWeight: null,
-                subOptionsSlotsByName: ["General door", "General door"]
-            )
-        } },
-        new Dictionary<string, DecisionSubOptionSlotDef>{ {
-            "General door",
-            new DecisionSubOptionSlotDef(
-                connectionName: "General door",
-                parentContextsPreferences: new Dictionary<string[], float> {
-                    { ["Square room", "Hallway"], 1f }
+    private static DecisionsMaker? Decider = new DecisionsMaker( new DecisionsData {
+        Options = new Dictionary<string, DecisionOption> {
+            {
+                "Square room",
+                new DecisionOption {
+                    Contexts = [ "Default" ],
+                    Name = "Square room",
+                    Description = null,
+                    Weight = 1f,
+                    RepeatMinimumAmount = null,
+                    RepeatMaximumAmount = null,
+                    IsRepeatingWeightScale = null,
+                    IsRepeatingContiguouslyWeightScale = null,
+                    RepeatIntermissionMinimumDelay = null,
+                    RepeatIntermissionWeight = null,
+                    SubOptionsSlots = [
+                        new DecisionOption.SubOptionSlotPreference {
+                            Name = "General door",
+                            NonEmptyPreference = 1f
+                        },
+                        new DecisionOption.SubOptionSlotPreference {
+                            Name = "General door",
+                            NonEmptyPreference = 1f
+                        }
+                    ]
                 }
-            )
-        } }
-    ) );
+            },
+            {
+                "Hallway",
+                new DecisionOption {
+                    Contexts = [ "Default" ],
+                    Name = "Hallway",
+                    Description = null,
+                    Weight = 1f,
+                    RepeatMinimumAmount = null,
+                    RepeatMaximumAmount = null,
+                    IsRepeatingWeightScale = null,
+                    IsRepeatingContiguouslyWeightScale = null,
+                    RepeatIntermissionMinimumDelay = null,
+                    RepeatIntermissionWeight = null,
+                    SubOptionsSlots = [
+                        new DecisionOption.SubOptionSlotPreference {
+                            Name = "General door",
+                            NonEmptyPreference = 1f
+                        },
+                        new DecisionOption.SubOptionSlotPreference {
+                            Name = "General door",
+                            NonEmptyPreference = 1f
+                        }
+                    ]
+                }
+            }
+        },
+        SubOptionTypes = new Dictionary<string, DecisionSubOptionSlotDef> {
+            {
+                "General door",
+                new DecisionSubOptionSlotDef {
+                    ConnectionName = "General door",
+                    ChildContextsPreferences = new Dictionary<string[], float> {
+                        { ["Square room"], 1f },
+                        { ["Hallway"], 1f }
+                    }
+                }
+            }
+        }
+    } );
 
     private static MenuType CurrentMenu = MenuType.Main;
 

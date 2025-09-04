@@ -25,10 +25,10 @@ internal partial class Program {
 
         try {
             string fileData = JsonSerializer.Serialize(
-                new DecisionsData(
-                    Program.Decider?.Data.Options ?? new Dictionary<string, DecisionOption>(),
-                    Program.Decider?.Data.SubOptionTypes ?? new Dictionary<string, DecisionSubOptionSlotDef>()
-                ),
+                new DecisionsData {
+                    Options = Program.Decider?.Data.Options ?? new Dictionary<string, DecisionOption>(),
+                    SubOptionTypes = Program.Decider?.Data.SubOptionTypes ?? new Dictionary<string, DecisionSubOptionSlotDef>()
+                },
                 new JsonSerializerOptions { WriteIndented = true }
             );
 

@@ -20,18 +20,18 @@ public partial class DecisionOptionConnector( DecisionOption head ) {
 
     public static DecisionOptionConnector Generate(
                 Random random,
-                DecisionsMaker decider,
+                DecisionsData decisionsData,
                 DecisionOption head,
                 int depth ) {
         DecisionOptionConnector headTree = new DecisionOptionConnector( head );
 
         int slot = 0;
 
-        foreach( string subName in head.SubOptionsSlotsByName ?? [] ) {
+        foreach( DecisionOption.SubOptionSlotPreference sub in head.SubOptionsSlots ?? [] ) {
             headTree.FillSlot(
                 random: random,
-                decider: decider,
-                slotDef: decider.Data.SubOptionTypes[subName],
+                decisionsData: decisionsData,
+                slotInfo: sub,
                 currentSlot: slot++,
                 currentDepth: depth
             );
@@ -47,53 +47,60 @@ public partial class DecisionOptionConnector( DecisionOption head ) {
 
 
 
-    public void FillSlot(
+    public bool FillSlot(
                 Random random,
-                DecisionsMaker decider,
-                DecisionSubOptionSlotDef slotDef,
+                DecisionsData decisionsData,
+                DecisionOption.SubOptionSlotPreference slotInfo,
                 int currentSlot,
                 int currentDepth ) {
+        if( random.NextSingle() > slotInfo.NonEmptyPreference ) {
+            return false;
+        }
+
         var pool = new List<(DecisionOption option, float pref)>();
 
-        foreach( (string name, DecisionOption option) in decider.Data.Options ) {
-            float subWeight = slotDef.ComputeWeight( option );
-            if( subWeight <= 0f ) {
+        foreach( (string name, DecisionOption option) in decisionsData.Options ) {
+            DecisionSubOptionSlotDef slotDef = decisionsData.SubOptionTypes[ slotInfo.Name ];
+
+            float childCandidateWeight = slotDef.ComputeWeightAsChildCandidate( option );
+            if( childCandidateWeight <= 0f ) {
                 continue;
             }
 
-            float optionWeight = option.ComputeWeight( false, false, true );
-
-            if( subWeight > 0f ) {
-                pool.Add( (option, optionWeight * subWeight) );
+            if( childCandidateWeight > 0f ) {
+                pool.Add( (option, childCandidateWeight) );
             }
         }
 
         DecisionOption pick = this.PickSlotOption( random, pool );
 
-        var choiceTree = DecisionOptionConnector.Generate( random, decider, pick, currentDepth++ );
+        var choiceTree = DecisionOptionConnector.Generate( random, decisionsData, pick, currentDepth++ );
 
-        this.Tree.Add( new Child(pick, choiceTree) );
+        this.Tree.Add( new Child( pick, choiceTree ) );
+
+        return true;
     }
 
 
     public DecisionOption PickSlotOption(
                 Random random,
                 IList<(DecisionOption option, float pref)> pool ) {
-        float r = random.NextSingle() * pool.Sum( o => o.pref );
+        float r = random.NextSingle() * pool.Sum(o => o.pref);
         float t = 0f;
         DecisionOption? choice = null;
 
         foreach( (DecisionOption o, float p) in pool ) {
-            choice = o;
             t += p;
+
             if( t > r ) {
+                choice = o;
                 break;
             }
         }
-        if( choice is null ) {
-            throw new Exception( "No slot Option selected" );
-        }
 
+        if( choice is null ) {
+            throw new Exception( "Could not pick Option for slot." );
+        }
         return choice;
     }
 

@@ -11,62 +11,81 @@ namespace TellMeWhatToDo;
 /// <summary>
 /// Defines a given available decision option. JSON-able.
 /// </summary>
-/// <param name="contexts">List of contexts this Option pertains to. Sub-Options evaluate
-/// their weights against these contexts and their given weights.</param>
-/// <param name="name">Name.</param>
-/// <param name="description">Optional description.</param>
-/// <param name="weight">Weight factor for RNG selection against other available Options.</param>
-/// <param name="repeatMinimumAmount">Minimum number of successive repeats, once selected.
-/// Relevant when `isRepeatingContiguouslyWeightScale` or `afterRepeatMinimumDelay` are
-/// specified.</param>
-/// <param name="repeatMaximumAmount">Maximum number of successive repeats. Randomized between
-/// `repeatMinimumAmount` (or 0, if none).</param>
-/// <param name="isRepeatingWeightScale">Weight factor for re-selecting the current Option,
-/// while repeating. Overrides `weight`.</param>
-/// <param name="isRepeatingContiguouslyWeightScale">Weight factor for re-selecting the current
-/// Option, while repeating in contiguous succession. Overrides `isRepeatingWeightScale` and
-/// `weight`.</param>
-/// <param name="repeatIntermissionMinimumDelay">Minimum number of Option selections within the
-/// current layer before a repeat of the current option resumes using its normal `weight` instead
-/// of `afterRepeatDowntimeWeight`.</param>
-/// <param name="repeatIntermissionWeight">Weight value to use instead of `weight` while in
-/// intermission from previous block of repeats. Defaults to 0.</param>
-///// <param name="associatedContextsPreference">Applies additional weight scaling (multiplier)
-///// for each given set of matched parent contexts.</param>
-///// <param name="unmatchedAssociatedContextsPreference">Applies additional weight scaling
-///// (multiplier) when no matched parent sets exist. If `associatedContextsPreference` has a
-///// value, this defaults to 0. Otherwise, it is skipped.</param>
-/// <param name="subOptionsSlotsByName">All available Options that can be generated to attach to the current
-/// (parent) Option.</param>
-///// <param name="subOptionAbsenceWeight">Weight factor for not having any sub-Option generated.
-///// Defaults to 0.</param>
-public partial class DecisionOption(
-            string[] contexts,
-            string name,
-            string? description,
-            float weight,
-            int? repeatMinimumAmount,
-            int? repeatMaximumAmount,
-            float? isRepeatingWeightScale,
-            float? isRepeatingContiguouslyWeightScale,
-            int? repeatIntermissionMinimumDelay,
-            float? repeatIntermissionWeight,
-            //IDictionary<string[], float> associatedContextsPreference,
-            //float? unmatchedAssociatedContextsPreference,
-            IList<string>? subOptionsSlotsByName ) {
-    public string[] Contexts { get; set; } = contexts;
-    public string Name { get; set; } = name;
-    public string? Description { get; set; } = description;
-    public float Weight { get; set; } = weight;
-    public int? RepeatMinimumAmount { get; set; } = repeatMinimumAmount;
-    public int? RepeatMaximumAmount { get; set; } = repeatMaximumAmount;
-    public float? IsRepeatingWeightScale { get; set; } = isRepeatingWeightScale;
-    public float? IsRepeatingContiguouslyWeightScale { get; set; } = isRepeatingContiguouslyWeightScale;
-    public int? RepeatIntermissionMinimumDelay { get; set; } = repeatIntermissionMinimumDelay;
-    public float? RepeatIntermissionWeight { get; set; } = repeatIntermissionWeight;
-    //public IDictionary<string[], float> AssociatedContextsPreference { get; set; } = associatedContextsPreference;
-    //public float? UnmatchedAssociatedContextSetPreference { get; set; } = unmatchedAssociatedContextsPreference;
-    public IList<string>? SubOptionsSlotsByName { get; set; } = subOptionsSlotsByName;
+public partial class DecisionOption {
+            //string[] contexts,
+            //string name,
+            //string? description,
+            //float weight,
+            //int? repeatMinimumAmount,
+            //int? repeatMaximumAmount,
+            //float? isRepeatingWeightScale,
+            //float? isRepeatingContiguouslyWeightScale,
+            //int? repeatIntermissionMinimumDelay,
+            //float? repeatIntermissionWeight,
+            ////IDictionary<string[], float> associatedContextsPreference,
+            ////float? unmatchedAssociatedContextsPreference,
+            //IList<DecisionOption.SubOptionSlotPreference>? subOptionsSlots ) {
+    public class SubOptionSlotPreference {
+        public string Name { get; set; } = null!;
+        public float NonEmptyPreference { get; set; } = 0f;
+    }
+
+
+
+    /// <summary>
+    /// List of contexts this Option pertains to. Sub-Options evaluate
+    /// their weights against these contexts and their given weights.
+    /// </summary>
+    public string[] Contexts { get; set; } = null!;   // = contexts;
+
+    /// <summary>Name.</summary>
+    public string Name { get; set; } = null!;   // = name;
+
+    /// <summary>Optional description.</summary>
+    public string? Description { get; set; } = null;    // = description;
+
+    /// <summary>Weight factor for RNG selection against other available Options.</summary>
+    public float Weight { get; set; } = 0f; // = weight;
+
+    /// <summary>Minimum number of successive repeats, once selected.
+    /// Relevant when `isRepeatingContiguouslyWeightScale` or `afterRepeatMinimumDelay` are
+    /// specified.</summary>
+    public int? RepeatMinimumAmount { get; set; } = null;   // = repeatMinimumAmount;
+
+    /// <summary>Maximum number of successive repeats. Randomized between
+    /// `repeatMinimumAmount` (or 0, if none).</summary>
+    public int? RepeatMaximumAmount { get; set; } = null;   // = repeatMaximumAmount;
+
+    /// <summary>Weight factor for re-selecting the current Option,
+    /// while repeating. Overrides `weight`.</summary>
+    public float? IsRepeatingWeightScale { get; set; } = null;  // = isRepeatingWeightScale;
+
+    /// <summary>Weight factor for re-selecting the current
+    /// Option, while repeating in contiguous succession. Overrides `isRepeatingWeightScale` and
+    /// `weight`.</summary>
+    public float? IsRepeatingContiguouslyWeightScale { get; set; } = null;  // = isRepeatingContiguouslyWeightScale;
+
+    /// <summary>Minimum number of Option selections within the
+    /// current layer before a repeat of the current option resumes using its normal `weight` instead
+    /// of `afterRepeatDowntimeWeight`.</summary>
+    public int? RepeatIntermissionMinimumDelay { get; set; } = null;    // = repeatIntermissionMinimumDelay;
+
+    /// <summary>Weight value to use instead of `weight` while in
+    /// intermission from previous block of repeats. Defaults to 0.</summary>
+    public float? RepeatIntermissionWeight { get; set; } = null;    // = repeatIntermissionWeight;
+
+    ///// <summary>Applies additional weight scaling (multiplier)
+    ///// for each given set of matched parent contexts.</summary>
+    //public IDictionary<string[], float> AssociatedContextsPreference { get; set; } = null;    // = associatedContextsPreference;
+
+    ///// <summary>Applies additional weight scaling
+    ///// (multiplier) when no matched parent sets exist. If `associatedContextsPreference` has a
+    ///// value, this defaults to 0. Otherwise, it is skipped.</summary>
+    //public float? UnmatchedAssociatedContextSetPreference { get; set; } = null;   // = unmatchedAssociatedContextsPreference;
+
+    /// <paramsummary>All available Options that can be generated to attach to the current
+    /// (parent) Option.</summary>
+    public IList<SubOptionSlotPreference>? SubOptionsSlots { get; set; } = null;    // = subOptionsSlots;
 
 
 

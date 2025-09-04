@@ -10,28 +10,29 @@ namespace TellMeWhatToDo;
 
 /// <summary>
 /// Defines decision making template data for all options of the given contexts that pertain to
-/// another, unspecified (parent) context.
+/// another, unspecified (parent) context. JSON-able.
 /// </summary>
-/// <param name="connectionName">Name for connector.</param>
-/// <param name="parentContextsPreferences">How preferred any of the given context sets (of the
-/// parent) may be to the given (sub) Option.</param>
-///// <param name="unmatchedSubContextsPreference">How preferred not having any of the given context
-/////sets may not be to the given (sub) Option.</param>
-public class DecisionSubOptionSlotDef(
-            string connectionName,
-            IDictionary<string[], float> parentContextsPreferences
-            //float? unmatchedSubContextsPreference,
-            ) {
-    public string? ConnectionName { get; set; } = connectionName;
-    public IDictionary<string[], float> ParentContextsPreferences { get; set; } = parentContextsPreferences;
-    //public float? UnmatchedSubContextsPreference { get; set; } = unmatchedSubContextsPreference;
+public class DecisionSubOptionSlotDef {
+            //string connectionName,
+            //IDictionary<string[], float> childContextsPreferences
+            ////float? unfilledSlotPreference
+            //) {
+    /// <summary>Name for connector.</summary>
+    public string ConnectionName { get; set; } = null!;
+    
+    /// <summary>Preferences for children by context sets.</summary>
+    public IDictionary<string[], float> ChildContextsPreferences { get; set; } = null!;
+
+    ///// <summary>How much preference (weight) exists to simply not give
+    ///// the current slot any fillings.</summary>
+    //public float? UnfilledSlotPreference { get; set; } = unfilledSlotPreference;
 
 
 
-    public float ComputeWeight( DecisionOption option ) {
+    public float ComputeWeightAsChildCandidate( DecisionOption option ) {
         float? weight = null;
 
-        foreach( (string[] ctxs, float pref) in this.ParentContextsPreferences ) {
+        foreach( (string[] ctxs, float pref) in this.ChildContextsPreferences ) {
             if( option.HasAllContexts(ctxs) ) {
                 weight = weight is not null
                     ? weight * pref
